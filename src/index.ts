@@ -1,4 +1,5 @@
-import { program } from 'commander';
+import { Option, program } from 'commander';
+import { reactions } from './utils/reaction';
 import { start } from './utils/start';
 require('pkginfo')(module);
 
@@ -8,5 +9,6 @@ program
 	.argument('<username>', 'facebook username/email/phone')
 	.argument('<password>', 'facebook password')
 	.argument('<post>', 'facebook post id')
-	.action((username, password, post) => start(username, password, post))
+	.addOption(new Option('-r, --reaction <reaction>', 'facebook reaction').choices([...reactions]).default('like'))
+	.action((username, password, post) => start(username, password, post, program.opts().reaction))
 	.parse();

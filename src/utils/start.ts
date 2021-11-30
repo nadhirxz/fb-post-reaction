@@ -9,11 +9,10 @@ export async function start(username: string, password: string, post: string, re
 			const { success, error } = await liker.likePost(reaction);
 			if (success) console.log('reacted to post successfully');
 			else console.log('error:', error);
-
-			await liker.finish();
 		} else {
 			console.log('error:', error);
 		}
+		await liker.finish();
 	} catch (error) {
 		console.log('error:', error);
 	}

@@ -4,6 +4,9 @@
 	"description": "Facebook post reaction",
 	"main": "lib/main.js",
 	"bin": "lib/main.js",
+	"files": [
+		"dist"
+	],
 	"scripts": {
 		"build": "tsc",
 		"dev": "ts-node src/index.ts"

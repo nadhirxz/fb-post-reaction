@@ -1,6 +1,6 @@
 import { Option, program } from 'commander';
-import { reactions } from './utils/reaction';
-import { start } from './utils/start';
+import { reactions } from './utils/Reaction';
+import ReactionMaker from './utils/ReactionMaker';
 require('pkginfo')(module);
 
 program
@@ -10,5 +10,7 @@ program
 	.argument('<password>', 'facebook password')
 	.argument('<post>', 'facebook post id')
 	.addOption(new Option('-r, --reaction <reaction>', 'facebook reaction').choices([...reactions]).default('like'))
-	.action((username, password, post) => start(username, password, post, program.opts().reaction))
+	.action((username, password, post) => new ReactionMaker(username, password, post).react(program.opts().reaction))
 	.parse();
+
+export default ReactionMaker;

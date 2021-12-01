@@ -6,7 +6,7 @@ export const reactions = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry']
 
 export type Reaction = typeof reactions[number];
 
-export default class Liker {
+export default class ReactionExecutor {
 	browser?: puppeteer.Browser;
 	page?: puppeteer.Page;
 
@@ -42,7 +42,7 @@ export default class Liker {
 		return { success: false, error: 'init' };
 	}
 
-	async likePost(reaction: Reaction) {
+	async react(reaction: Reaction) {
 		if (this.page) {
 			await this.page.goto(`${BASE_URL}/${this.post}`);
 
@@ -62,7 +62,7 @@ export default class Liker {
 				await this.page.keyboard.press('Enter');
 				return { success: true };
 			}
-			return { success: false, error: 'like-btn' };
+			return { success: false, error: 'btn' };
 		}
 		return { success: false, error: 'init' };
 	}

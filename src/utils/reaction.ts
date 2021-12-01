@@ -13,10 +13,15 @@ export default class ReactionExecutor {
 	constructor(public username: string, public password: string, public post: string) {}
 
 	async init() {
-		this.browser = await puppeteer.launch({ headless: process.env.NODE_ENV == 'production' });
-		this.page = await this.browser?.newPage();
-		const context = this.browser.defaultBrowserContext();
-		context.overridePermissions('https://www.facebook.com', ['geolocation', 'notifications']);
+		try {
+			this.browser = await puppeteer.launch({ headless: process.env.NODE_ENV == 'production' });
+			this.page = await this.browser?.newPage();
+			const context = this.browser.defaultBrowserContext();
+			context.overridePermissions('https://www.facebook.com', ['geolocation', 'notifications']);
+			return { success: true, error: '' };
+		} catch (error) {
+			return { success: false, error: 'init' };
+		}
 	}
 
 	async login() {
@@ -37,7 +42,7 @@ export default class ReactionExecutor {
 
 			const loginSuccess = await this.page.evaluate(() => Boolean(document.querySelector('a[aria-label="Home"]')));
 
-			return loginSuccess ? { success: true } : { success: false, error: 'login' };
+			return loginSuccess ? { success: true, error: '' } : { success: false, error: 'login' };
 		}
 		return { success: false, error: 'init' };
 	}
@@ -60,7 +65,7 @@ export default class ReactionExecutor {
 				await this.page.waitForSelector(reactionSelector);
 				await this.page.focus(reactionSelector);
 				await this.page.keyboard.press('Enter');
-				return { success: true };
+				return { success: true, error: '' };
 			}
 			return { success: false, error: 'btn' };
 		}

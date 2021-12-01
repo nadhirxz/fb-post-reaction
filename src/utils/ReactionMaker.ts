@@ -1,31 +1,20 @@
 import ReactionExecutor, { Reaction } from './Reaction';
-
-const errors: { [key: string]: string } = {
-	init: 'could not initialize the headless browser',
-	btn: 'could not find the reaction button',
-	login: 'unable to login',
-};
+import { err, operation, success } from './operations';
+import { errors } from 'puppeteer';
 
 export default class ReactionMaker {
 	constructor(public username: string, public password: string, public post: string) {}
 
 	async react(reaction: Reaction) {
 		const executor = new ReactionExecutor(this.username, this.password, this.post);
-		await executor.init();
 		try {
-			const { success: loginSuccess, error: loginError } = await executor.login();
-			if (loginSuccess) {
-				const { success, error } = await executor.react(reaction);
-				if (success) {
-					console.log('reacted to post successfully');
-					await executor.finish();
-					return;
-				}
-				throw error;
-			}
-			throw loginError;
+			await operation('init', async () => await executor.init());
+			await operation('login', async () => await executor.login());
+			await operation('reaction', async () => await executor.react(reaction));
+			success('reacted to post successfully');
 		} catch (error) {
-			console.log('error:', errors[error as string] || error);
+			err(`error: ${errors[error as string] || error}`);
+		} finally {
 			await executor.finish();
 		}
 	}

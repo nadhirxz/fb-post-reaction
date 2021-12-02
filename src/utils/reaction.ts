@@ -54,10 +54,18 @@ export default class ReactionExecutor {
 			const commentButton = await this.page.$('div[aria-label="Leave a comment"]');
 
 			if (commentButton) {
+				await this.page.waitForTimeout(2000);
+
+				await this.page.evaluate(() =>
+					Array.from(document.querySelectorAll('div[role="article"]'))
+						.slice(1)
+						.forEach(element => (element.innerHTML = ''))
+				);
+
 				const parent = (await commentButton.$x('..'))[0];
 				const likeButton = (await parent.$x('preceding-sibling::div[1]'))[0];
 
-				await this.page.waitForTimeout(4000);
+				await this.page.waitForTimeout(2000);
 
 				await likeButton.hover();
 

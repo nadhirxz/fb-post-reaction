@@ -8,3 +8,10 @@ export const spinners = {
 	login: createSpinner('logging in'),
 	reaction: createSpinner('reacting to post'),
 };
+
+export const stopAllSpinners = (success: boolean = true) => {
+	Object.keys(spinners).forEach(key => {
+		const spinner = spinners[key as keyof typeof spinners];
+		if (spinner.isSpinning) success ? spinner.succeed() : spinner.fail();
+	});
+};

@@ -2,8 +2,8 @@
 	"name": "fb-post-reaction",
 	"version": "0.1.0",
 	"description": "Facebook post reaction",
-	"main": "lib/main.js",
-	"bin": "lib/main.js",
+	"main": "dist/index.js",
+	"bin": "dist/index.js",
 	"files": [
 		"dist"
 	],

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { Option, program } from 'commander';
 import { reactions } from './utils/Reaction';
 import ReactionMaker from './utils/ReactionMaker';

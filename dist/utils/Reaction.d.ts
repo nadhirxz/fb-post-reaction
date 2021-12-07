@@ -8,18 +8,15 @@ export default class ReactionExecutor {
     browser?: puppeteer.Browser;
     page?: puppeteer.Page;
     constructor(username: string, password: string, post: string);
-    init(): Promise<void>;
-    login(): Promise<{
+    init(): Promise<{
         success: boolean;
-        error?: undefined;
-    } | {
+        error: string;
+    }>;
+    login(): Promise<{
         success: boolean;
         error: string;
     }>;
     react(reaction: Reaction): Promise<{
-        success: boolean;
-        error?: undefined;
-    } | {
         success: boolean;
         error: string;
     }>;

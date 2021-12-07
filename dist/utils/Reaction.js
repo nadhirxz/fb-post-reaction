@@ -49,10 +49,11 @@ var ReactionExecutor = /** @class */ (function () {
     ReactionExecutor.prototype.init = function () {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var _b, _c, context;
+            var _b, _c, context, error_1;
             return __generator(this, function (_d) {
                 switch (_d.label) {
                     case 0:
+                        _d.trys.push([0, 3, , 4]);
                         _b = this;
                         return [4 /*yield*/, puppeteer.launch({ headless: process.env.NODE_ENV == 'production' })];
                     case 1:
@@ -63,7 +64,11 @@ var ReactionExecutor = /** @class */ (function () {
                         _c.page = _d.sent();
                         context = this.browser.defaultBrowserContext();
                         context.overridePermissions('https://www.facebook.com', ['geolocation', 'notifications']);
-                        return [2 /*return*/];
+                        return [2 /*return*/, { success: true, error: '' }];
+                    case 3:
+                        error_1 = _d.sent();
+                        return [2 /*return*/, { success: false, error: 'init' }];
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -102,7 +107,7 @@ var ReactionExecutor = /** @class */ (function () {
                         return [4 /*yield*/, this.page.evaluate(function () { return Boolean(document.querySelector('a[aria-label="Home"]')); })];
                     case 9:
                         loginSuccess = _a.sent();
-                        return [2 /*return*/, loginSuccess ? { success: true } : { success: false, error: 'login' }];
+                        return [2 /*return*/, loginSuccess ? { success: true, error: '' } : { success: false, error: 'login' }];
                     case 10: return [2 /*return*/, { success: false, error: 'init' }];
                 }
             });
@@ -114,39 +119,49 @@ var ReactionExecutor = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (!this.page) return [3 /*break*/, 11];
+                        if (!this.page) return [3 /*break*/, 13];
                         return [4 /*yield*/, this.page.goto(BASE_URL + "/" + this.post)];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.page.$('div[aria-label="Leave a comment"]')];
                     case 2:
                         commentButton = _a.sent();
-                        if (!commentButton) return [3 /*break*/, 10];
-                        return [4 /*yield*/, commentButton.$x('..')];
+                        if (!commentButton) return [3 /*break*/, 12];
+                        return [4 /*yield*/, this.page.waitForTimeout(2000)];
                     case 3:
+                        _a.sent();
+                        return [4 /*yield*/, this.page.evaluate(function () {
+                                return Array.from(document.querySelectorAll('div[role="article"]'))
+                                    .slice(1)
+                                    .forEach(function (element) { return (element.innerHTML = ''); });
+                            })];
+                    case 4:
+                        _a.sent();
+                        return [4 /*yield*/, commentButton.$x('..')];
+                    case 5:
                         parent_1 = (_a.sent())[0];
                         return [4 /*yield*/, parent_1.$x('preceding-sibling::div[1]')];
-                    case 4:
+                    case 6:
                         likeButton = (_a.sent())[0];
-                        return [4 /*yield*/, this.page.waitForTimeout(4000)];
-                    case 5:
+                        return [4 /*yield*/, this.page.waitForTimeout(2000)];
+                    case 7:
                         _a.sent();
                         return [4 /*yield*/, likeButton.hover()];
-                    case 6:
+                    case 8:
                         _a.sent();
                         reactionSelector = "div[aria-label=\"" + (reaction.charAt(0).toUpperCase() + reaction.slice(1)) + "\"]";
                         return [4 /*yield*/, this.page.waitForSelector(reactionSelector)];
-                    case 7:
-                        _a.sent();
-                        return [4 /*yield*/, this.page.focus(reactionSelector)];
-                    case 8:
-                        _a.sent();
-                        return [4 /*yield*/, this.page.keyboard.press('Enter')];
                     case 9:
                         _a.sent();
-                        return [2 /*return*/, { success: true }];
-                    case 10: return [2 /*return*/, { success: false, error: 'btn' }];
-                    case 11: return [2 /*return*/, { success: false, error: 'init' }];
+                        return [4 /*yield*/, this.page.focus(reactionSelector)];
+                    case 10:
+                        _a.sent();
+                        return [4 /*yield*/, this.page.keyboard.press('Enter')];
+                    case 11:
+                        _a.sent();
+                        return [2 /*return*/, { success: true, error: '' }];
+                    case 12: return [2 /*return*/, { success: false, error: 'btn' }];
+                    case 13: return [2 /*return*/, { success: false, error: 'init' }];
                 }
             });
         });

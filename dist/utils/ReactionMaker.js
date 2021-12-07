@@ -37,11 +37,8 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Reaction_1 = require("./Reaction");
-var errors = {
-    init: 'could not initialize the headless browser',
-    btn: 'could not find the reaction button',
-    login: 'unable to login',
-};
+var operations_1 = require("./operations");
+var puppeteer_1 = require("puppeteer");
 var ReactionMaker = /** @class */ (function () {
     function ReactionMaker(username, password, post) {
         this.username = username;
@@ -50,40 +47,50 @@ var ReactionMaker = /** @class */ (function () {
     }
     ReactionMaker.prototype.react = function (reaction) {
         return __awaiter(this, void 0, void 0, function () {
-            var executor, _a, loginSuccess, loginError, _b, success, error, error_1;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
+            var executor, error_1;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
                     case 0:
                         executor = new Reaction_1.default(this.username, this.password, this.post);
-                        return [4 /*yield*/, executor.init()];
+                        _a.label = 1;
                     case 1:
-                        _c.sent();
-                        _c.label = 2;
+                        _a.trys.push([1, 5, 6, 8]);
+                        return [4 /*yield*/, operations_1.operation('init', function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, executor.init()];
+                                    case 1: return [2 /*return*/, _a.sent()];
+                                }
+                            }); }); })];
                     case 2:
-                        _c.trys.push([2, 8, , 10]);
-                        return [4 /*yield*/, executor.login()];
+                        _a.sent();
+                        return [4 /*yield*/, operations_1.operation('login', function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, executor.login()];
+                                    case 1: return [2 /*return*/, _a.sent()];
+                                }
+                            }); }); })];
                     case 3:
-                        _a = _c.sent(), loginSuccess = _a.success, loginError = _a.error;
-                        if (!loginSuccess) return [3 /*break*/, 7];
-                        return [4 /*yield*/, executor.react(reaction)];
+                        _a.sent();
+                        return [4 /*yield*/, operations_1.operation('reaction', function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, executor.react(reaction)];
+                                    case 1: return [2 /*return*/, _a.sent()];
+                                }
+                            }); }); })];
                     case 4:
-                        _b = _c.sent(), success = _b.success, error = _b.error;
-                        if (!success) return [3 /*break*/, 6];
-                        console.log('reacted to post successfully');
-                        return [4 /*yield*/, executor.finish()];
+                        _a.sent();
+                        operations_1.success('reacted to post successfully');
+                        return [3 /*break*/, 8];
                     case 5:
-                        _c.sent();
-                        return [2 /*return*/];
-                    case 6: throw error;
-                    case 7: throw loginError;
-                    case 8:
-                        error_1 = _c.sent();
-                        console.log('error:', errors[error_1] || error_1);
-                        return [4 /*yield*/, executor.finish()];
-                    case 9:
-                        _c.sent();
-                        return [3 /*break*/, 10];
-                    case 10: return [2 /*return*/];
+                        error_1 = _a.sent();
+                        operations_1.err("error: " + (puppeteer_1.errors[error_1] || error_1));
+                        return [3 /*break*/, 8];
+                    case 6: return [4 /*yield*/, executor.finish()];
+                    case 7:
+                        _a.sent();
+                        return [7 /*endfinally*/];
+                    case 8: return [2 /*return*/];
                 }
             });
         });

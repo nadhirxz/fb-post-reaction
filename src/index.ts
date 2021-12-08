@@ -1,9 +1,10 @@
 import ReactionExecutor, { Reaction } from './utils/Reaction';
 import { err, operation, success } from './utils/operations';
 import { errors } from 'puppeteer';
-import { reactions as reactionList } from './utils/Reaction';
 
-export default class ReactionMaker {
+export { reactions } from './utils/Reaction';
+
+export class ReactionMaker {
 	constructor(public username: string, public password: string, public post: string, public isCLI: boolean = false) {}
 
 	async react(reaction: Reaction) {
@@ -20,5 +21,3 @@ export default class ReactionMaker {
 		}
 	}
 }
-
-export const reactions = reactionList;

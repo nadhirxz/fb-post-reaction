@@ -1,14 +1,14 @@
 import { spinners, stopAllSpinners } from './spinners';
 import { bold } from 'chalk';
 
-export const operation = async (spinner: keyof typeof spinners, method: () => Promise<{ success: boolean; error: string }>) => {
-	spinners[spinner].start();
+export const operation = async (method: () => Promise<{ success: boolean; error: string }>, spinner?: keyof typeof spinners) => {
+	spinner != null && spinners[spinner].start();
 	const { success, error } = await method();
 	if (!success) {
-		spinners[spinner].fail();
+		spinner != null && spinners[spinner].fail();
 		throw error;
 	}
-	spinners[spinner].succeed();
+	spinner != null && spinners[spinner].succeed();
 };
 
 export const errors: { [key: string]: string } = {

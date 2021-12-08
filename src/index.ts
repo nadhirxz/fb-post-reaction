@@ -1,26 +1,21 @@
-#!/usr/bin/env node
-import { Option, program } from 'commander';
-import { reactions } from './utils/Reaction';
-import ReactionMaker from './utils/ReactionMaker';
-import { prompt } from 'inquirer';
-import { bold } from 'chalk';
-require('pkginfo')(module);
+import ReactionExecutor, { Reaction } from './utils/Reaction';
+import { err, operation, success } from './utils/operations';
+import { errors } from 'puppeteer';
 
-if (require.main === module) {
-	program
-		.version(module.exports.version)
-		.description(module.exports.description)
-		.argument('<post>', 'facebook post id')
-		.option('-u, --username <username>', 'facebook username/email/phone')
-		.option('-p, --password <password>', 'facebook password')
-		.addOption(new Option('-r, --reaction <reaction>', 'facebook reaction').choices([...reactions]).default('like'))
-		.action(async post => {
-			let { username, password, reaction } = program.opts();
-			if (!username) username = await prompt({ name: 'username', type: 'input', message: 'username:', validate: value => value.length > 0, prefix: bold.green('-') }).then(({ username }) => username);
-			if (!password) password = await prompt({ name: 'password', type: 'password', mask: '*', message: 'password:', validate: value => value.length > 0, prefix: bold.green('-') }).then(({ password }) => password);
-			new ReactionMaker(username, password, post).react(reaction);
-		})
-		.parse();
+export default class ReactionMaker {
+	constructor(public username: string, public password: string, public post: string, public isCLI: boolean = false) {}
+
+	async react(reaction: Reaction) {
+		const executor = new ReactionExecutor(this.username, this.password, this.post);
+		try {
+			await operation(async () => await executor.init(), this.isCLI ? 'init' : undefined);
+			await operation(async () => await executor.login(), this.isCLI ? 'login' : undefined);
+			await operation(async () => await executor.react(reaction), this.isCLI ? 'reaction' : undefined);
+			this.isCLI && success('reacted to post successfully');
+		} catch (error) {
+			err(`error: ${errors[error as string] || error}`);
+		} finally {
+			await executor.finish();
+		}
+	}
 }
-
-export default ReactionMaker;

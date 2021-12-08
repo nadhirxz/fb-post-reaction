@@ -10,11 +10,11 @@ export default class ReactionExecutor {
 	browser?: puppeteer.Browser;
 	page?: puppeteer.Page;
 
-	constructor(public username: string, public password: string, public post: string) {}
+	constructor(public username: string, public password: string, public post: string, public headless: boolean) {}
 
 	async init() {
 		try {
-			this.browser = await puppeteer.launch({ headless: process.env.NODE_ENV == 'production' });
+			this.browser = await puppeteer.launch({ headless: this.headless });
 			this.page = await this.browser?.newPage();
 			const context = this.browser.defaultBrowserContext();
 			context.overridePermissions('https://www.facebook.com', ['geolocation', 'notifications']);

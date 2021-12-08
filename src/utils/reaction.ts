@@ -4,9 +4,9 @@ const BASE_URL = 'https://www.facebook.com';
 
 export const reactions = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'] as const;
 
-export type Reaction = typeof reactions[number];
+export type ReactionType = typeof reactions[number];
 
-export default class ReactionExecutor {
+export class ReactionExecutor {
 	browser?: puppeteer.Browser;
 	page?: puppeteer.Page;
 
@@ -47,7 +47,7 @@ export default class ReactionExecutor {
 		return { success: false, error: 'init' };
 	}
 
-	async react(reaction: Reaction) {
+	async react(reaction: ReactionType) {
 		if (this.page) {
 			await this.page.goto(`${BASE_URL}/${this.post}`);
 

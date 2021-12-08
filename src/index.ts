@@ -1,18 +1,18 @@
-import ReactionExecutor, { Reaction } from './utils/Reaction';
+import { ReactionExecutor, ReactionType } from './utils/Reaction';
 import { err, operation, success } from './utils/operations';
 import { errors } from 'puppeteer';
-
-export { reactions } from './utils/Reaction';
 
 interface Options {
 	isCLI?: boolean;
 	headlessBrowser?: boolean;
 }
 
-export class ReactionMaker {
+export { reactions } from './utils/Reaction';
+
+export class Reaction {
 	constructor(private username: string, private password: string, private post: string, private options: Options) {}
 
-	async react(reaction: Reaction) {
+	async react(reaction: ReactionType) {
 		const executor = new ReactionExecutor(this.username, this.password, this.post, this.options.headlessBrowser ?? process.env.NODE_ENV == 'production');
 		const isCLI = this.options.isCLI === true;
 		try {

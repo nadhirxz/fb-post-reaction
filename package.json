@@ -1,6 +1,6 @@
 {
 	"name": "fb-post-reaction",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Facebook post reaction",
 	"main": "dist/index.js",
 	"bin": "dist/index.js",

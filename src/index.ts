@@ -12,7 +12,7 @@ export { reactions } from './utils/Reaction';
 export class Reaction {
 	constructor(private username: string, private password: string, private post: string, private options?: Options) {}
 
-	async react(reaction: ReactionType) {
+	async react(reaction: ReactionType = 'like') {
 		const executor = new ReactionExecutor(this.username, this.password, this.post, this.options?.headlessBrowser ?? true);
 		const isCLI = this.options?.isCLI === true;
 		let returnData: { success: boolean; error?: string } = { success: false };

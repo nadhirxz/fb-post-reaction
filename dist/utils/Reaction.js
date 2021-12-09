@@ -36,15 +36,16 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.reactions = void 0;
+exports.ReactionExecutor = exports.reactions = void 0;
 var puppeteer = require("puppeteer");
 var BASE_URL = 'https://www.facebook.com';
 exports.reactions = ['like', 'love', 'care', 'haha', 'wow', 'sad', 'angry'];
 var ReactionExecutor = /** @class */ (function () {
-    function ReactionExecutor(username, password, post) {
+    function ReactionExecutor(username, password, post, headless) {
         this.username = username;
         this.password = password;
         this.post = post;
+        this.headless = headless;
     }
     ReactionExecutor.prototype.init = function () {
         var _a;
@@ -55,7 +56,7 @@ var ReactionExecutor = /** @class */ (function () {
                     case 0:
                         _d.trys.push([0, 3, , 4]);
                         _b = this;
-                        return [4 /*yield*/, puppeteer.launch({ headless: process.env.NODE_ENV == 'production' })];
+                        return [4 /*yield*/, puppeteer.launch({ headless: this.headless })];
                     case 1:
                         _b.browser = _d.sent();
                         _c = this;
@@ -181,4 +182,4 @@ var ReactionExecutor = /** @class */ (function () {
     };
     return ReactionExecutor;
 }());
-exports.default = ReactionExecutor;
+exports.ReactionExecutor = ReactionExecutor;

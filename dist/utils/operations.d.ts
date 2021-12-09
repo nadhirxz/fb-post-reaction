@@ -1,8 +1,7 @@
-import { spinners } from './spinners';
-export declare const operation: (spinner: keyof typeof spinners, method: () => Promise<{
+export declare const operation: (method: () => Promise<{
     success: boolean;
     error: string;
-}>) => Promise<void>;
+}>, spinner?: "init" | "login" | "reaction" | undefined) => Promise<void>;
 export declare const errors: {
     [key: string]: string;
 };

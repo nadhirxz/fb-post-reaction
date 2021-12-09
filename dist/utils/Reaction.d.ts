@@ -1,13 +1,14 @@
 import * as puppeteer from 'puppeteer';
 export declare const reactions: readonly ["like", "love", "care", "haha", "wow", "sad", "angry"];
-export declare type Reaction = typeof reactions[number];
-export default class ReactionExecutor {
+export declare type ReactionType = typeof reactions[number];
+export declare class ReactionExecutor {
     username: string;
     password: string;
     post: string;
+    headless: boolean;
     browser?: puppeteer.Browser;
     page?: puppeteer.Page;
-    constructor(username: string, password: string, post: string);
+    constructor(username: string, password: string, post: string, headless: boolean);
     init(): Promise<{
         success: boolean;
         error: string;
@@ -16,7 +17,7 @@ export default class ReactionExecutor {
         success: boolean;
         error: string;
     }>;
-    react(reaction: Reaction): Promise<{
+    react(reaction: ReactionType): Promise<{
         success: boolean;
         error: string;
     }>;

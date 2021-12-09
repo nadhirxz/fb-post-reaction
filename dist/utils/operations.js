@@ -39,20 +39,20 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.err = exports.success = exports.errors = exports.operation = void 0;
 var spinners_1 = require("./spinners");
 var chalk_1 = require("chalk");
-var operation = function (spinner, method) { return __awaiter(void 0, void 0, void 0, function () {
+var operation = function (method, spinner) { return __awaiter(void 0, void 0, void 0, function () {
     var _a, success, error;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
-                spinners_1.spinners[spinner].start();
+                spinner != null && spinners_1.spinners[spinner].start();
                 return [4 /*yield*/, method()];
             case 1:
                 _a = _b.sent(), success = _a.success, error = _a.error;
                 if (!success) {
-                    spinners_1.spinners[spinner].fail();
+                    spinner != null && spinners_1.spinners[spinner].fail();
                     throw error;
                 }
-                spinners_1.spinners[spinner].succeed();
+                spinner != null && spinners_1.spinners[spinner].succeed();
                 return [2 /*return*/];
         }
     });

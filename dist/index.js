@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
@@ -36,55 +35,75 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArray = (this && this.__spreadArray) || function (to, from) {
-    for (var i = 0, il = from.length, j = to.length; i < il; i++, j++)
-        to[j] = from[i];
-    return to;
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-var commander_1 = require("commander");
+exports.Reaction = exports.reactions = void 0;
 var Reaction_1 = require("./utils/Reaction");
-var ReactionMaker_1 = require("./utils/ReactionMaker");
-var inquirer_1 = require("inquirer");
-var chalk_1 = require("chalk");
-require('pkginfo')(module);
-if (require.main === module) {
-    commander_1.program
-        .version(module.exports.version)
-        .description(module.exports.description)
-        .argument('<post>', 'facebook post id')
-        .option('-u, --username <username>', 'facebook username/email/phone')
-        .option('-p, --password <password>', 'facebook password')
-        .addOption(new commander_1.Option('-r, --reaction <reaction>', 'facebook reaction').choices(__spreadArray([], Reaction_1.reactions)).default('like'))
-        .action(function (post) { return __awaiter(void 0, void 0, void 0, function () {
-        var _a, username, password, reaction;
-        return __generator(this, function (_b) {
-            switch (_b.label) {
-                case 0:
-                    _a = commander_1.program.opts(), username = _a.username, password = _a.password, reaction = _a.reaction;
-                    if (!!username) return [3 /*break*/, 2];
-                    return [4 /*yield*/, inquirer_1.prompt({ name: 'username', type: 'input', message: 'username:', validate: function (value) { return value.length > 0; }, prefix: chalk_1.bold.green('-') }).then(function (_a) {
-                            var username = _a.username;
-                            return username;
-                        })];
-                case 1:
-                    username = _b.sent();
-                    _b.label = 2;
-                case 2:
-                    if (!!password) return [3 /*break*/, 4];
-                    return [4 /*yield*/, inquirer_1.prompt({ name: 'password', type: 'password', mask: '*', message: 'password:', validate: function (value) { return value.length > 0; }, prefix: chalk_1.bold.green('-') }).then(function (_a) {
-                            var password = _a.password;
-                            return password;
-                        })];
-                case 3:
-                    password = _b.sent();
-                    _b.label = 4;
-                case 4:
-                    new ReactionMaker_1.default(username, password, post).react(reaction);
-                    return [2 /*return*/];
-            }
+var operations_1 = require("./utils/operations");
+var puppeteer_1 = require("puppeteer");
+var Reaction_2 = require("./utils/Reaction");
+Object.defineProperty(exports, "reactions", { enumerable: true, get: function () { return Reaction_2.reactions; } });
+var Reaction = /** @class */ (function () {
+    function Reaction(username, password, post, options) {
+        this.username = username;
+        this.password = password;
+        this.post = post;
+        this.options = options;
+    }
+    Reaction.prototype.react = function (reaction) {
+        var _a, _b, _c;
+        return __awaiter(this, void 0, void 0, function () {
+            var executor, isCLI, returnData, error_1;
+            var _this = this;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
+                        executor = new Reaction_1.ReactionExecutor(this.username, this.password, this.post, (_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.headlessBrowser) !== null && _b !== void 0 ? _b : true);
+                        isCLI = ((_c = this.options) === null || _c === void 0 ? void 0 : _c.isCLI) === true;
+                        returnData = { success: false };
+                        _d.label = 1;
+                    case 1:
+                        _d.trys.push([1, 5, 6, 8]);
+                        return [4 /*yield*/, operations_1.operation(function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, executor.init()];
+                                    case 1: return [2 /*return*/, _a.sent()];
+                                }
+                            }); }); }, isCLI ? 'init' : undefined)];
+                    case 2:
+                        _d.sent();
+                        return [4 /*yield*/, operations_1.operation(function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, executor.login()];
+                                    case 1: return [2 /*return*/, _a.sent()];
+                                }
+                            }); }); }, isCLI ? 'login' : undefined)];
+                    case 3:
+                        _d.sent();
+                        return [4 /*yield*/, operations_1.operation(function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
+                                switch (_a.label) {
+                                    case 0: return [4 /*yield*/, executor.react(reaction)];
+                                    case 1: return [2 /*return*/, _a.sent()];
+                                }
+                            }); }); }, isCLI ? 'reaction' : undefined)];
+                    case 4:
+                        _d.sent();
+                        isCLI && operations_1.success('reacted to post successfully');
+                        returnData = { success: true };
+                        return [3 /*break*/, 8];
+                    case 5:
+                        error_1 = _d.sent();
+                        operations_1.err("error: " + (puppeteer_1.errors[error_1] || error_1));
+                        returnData = { success: false, error: puppeteer_1.errors[error_1] || error_1 };
+                        return [3 /*break*/, 8];
+                    case 6: return [4 /*yield*/, executor.finish()];
+                    case 7:
+                        _d.sent();
+                        return [2 /*return*/, returnData];
+                    case 8: return [2 /*return*/];
+                }
+            });
         });
-    }); })
-        .parse();
-}
-exports.default = ReactionMaker_1.default;
+    };
+    return Reaction;
+}());
+exports.Reaction = Reaction;

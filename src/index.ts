@@ -1,6 +1,6 @@
 import { ReactionExecutor, ReactionType } from './utils/Reaction';
 import { err, operation, success } from './utils/operations';
-import { errors } from 'puppeteer';
+import { CustomError, errors } from 'puppeteer';
 
 interface Options {
 	isCLI?: boolean;
@@ -15,15 +15,19 @@ export class Reaction {
 	async react(reaction: ReactionType) {
 		const executor = new ReactionExecutor(this.username, this.password, this.post, this.options?.headlessBrowser ?? true);
 		const isCLI = this.options?.isCLI === true;
+		let returnData: { success: boolean; error?: typeof CustomError | string } = { success: false };
 		try {
 			await operation(async () => await executor.init(), isCLI ? 'init' : undefined);
 			await operation(async () => await executor.login(), isCLI ? 'login' : undefined);
 			await operation(async () => await executor.react(reaction), isCLI ? 'reaction' : undefined);
 			isCLI && success('reacted to post successfully');
+			returnData = { success: true };
 		} catch (error) {
 			err(`error: ${errors[error as string] || error}`);
+			returnData = { success: false, error: errors[error as string] || error };
 		} finally {
 			await executor.finish();
+			return returnData;
 		}
 	}
 }

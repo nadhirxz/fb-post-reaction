@@ -1,5 +1,4 @@
 import { ReactionType } from './utils/Reaction';
-import { CustomError } from 'puppeteer';
 interface Options {
     isCLI?: boolean;
     headlessBrowser?: boolean;
@@ -11,8 +10,8 @@ export declare class Reaction {
     private post;
     private options?;
     constructor(username: string, password: string, post: string, options?: Options | undefined);
-    react(reaction: ReactionType): Promise<{
+    react(reaction?: ReactionType): Promise<{
         success: boolean;
-        error?: string | typeof CustomError | undefined;
+        error?: string | undefined;
     }>;
 }

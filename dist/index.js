@@ -50,19 +50,20 @@ var Reaction = /** @class */ (function () {
         this.options = options;
     }
     Reaction.prototype.react = function (reaction) {
-        var _a, _b, _c;
+        var _a, _b, _c, _d;
+        if (reaction === void 0) { reaction = 'like'; }
         return __awaiter(this, void 0, void 0, function () {
             var executor, isCLI, returnData, error_1;
             var _this = this;
-            return __generator(this, function (_d) {
-                switch (_d.label) {
+            return __generator(this, function (_e) {
+                switch (_e.label) {
                     case 0:
                         executor = new Reaction_1.ReactionExecutor(this.username, this.password, this.post, (_b = (_a = this.options) === null || _a === void 0 ? void 0 : _a.headlessBrowser) !== null && _b !== void 0 ? _b : true);
                         isCLI = ((_c = this.options) === null || _c === void 0 ? void 0 : _c.isCLI) === true;
                         returnData = { success: false };
-                        _d.label = 1;
+                        _e.label = 1;
                     case 1:
-                        _d.trys.push([1, 5, 6, 8]);
+                        _e.trys.push([1, 5, 6, 8]);
                         return [4 /*yield*/, operations_1.operation(function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0: return [4 /*yield*/, executor.init()];
@@ -70,7 +71,7 @@ var Reaction = /** @class */ (function () {
                                 }
                             }); }); }, isCLI ? 'init' : undefined)];
                     case 2:
-                        _d.sent();
+                        _e.sent();
                         return [4 /*yield*/, operations_1.operation(function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0: return [4 /*yield*/, executor.login()];
@@ -78,7 +79,7 @@ var Reaction = /** @class */ (function () {
                                 }
                             }); }); }, isCLI ? 'login' : undefined)];
                     case 3:
-                        _d.sent();
+                        _e.sent();
                         return [4 /*yield*/, operations_1.operation(function () { return __awaiter(_this, void 0, void 0, function () { return __generator(this, function (_a) {
                                 switch (_a.label) {
                                     case 0: return [4 /*yield*/, executor.react(reaction)];
@@ -86,18 +87,18 @@ var Reaction = /** @class */ (function () {
                                 }
                             }); }); }, isCLI ? 'reaction' : undefined)];
                     case 4:
-                        _d.sent();
+                        _e.sent();
                         isCLI && operations_1.success('reacted to post successfully');
                         returnData = { success: true };
                         return [3 /*break*/, 8];
                     case 5:
-                        error_1 = _d.sent();
-                        operations_1.err("error: " + (puppeteer_1.errors[error_1] || error_1));
-                        returnData = { success: false, error: puppeteer_1.errors[error_1] || error_1 };
+                        error_1 = _e.sent();
+                        returnData = { success: false, error: ((_d = puppeteer_1.errors[error_1]) === null || _d === void 0 ? void 0 : _d.name) || error_1 };
+                        operations_1.err("error: " + returnData.error);
                         return [3 /*break*/, 8];
                     case 6: return [4 /*yield*/, executor.finish()];
                     case 7:
-                        _d.sent();
+                        _e.sent();
                         return [2 /*return*/, returnData];
                     case 8: return [2 /*return*/];
                 }

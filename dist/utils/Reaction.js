@@ -56,7 +56,7 @@ var ReactionExecutor = /** @class */ (function () {
                     case 0:
                         _d.trys.push([0, 3, , 4]);
                         _b = this;
-                        return [4 /*yield*/, puppeteer.launch({ headless: this.headless })];
+                        return [4 /*yield*/, puppeteer.launch({ headless: this.headless, args: ['--no-sandbox', '--disable-setuid-sandbox'] })];
                     case 1:
                         _b.browser = _d.sent();
                         _c = this;

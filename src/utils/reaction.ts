@@ -40,7 +40,7 @@ export class ReactionExecutor {
 
 			await this.page.goto(BASE_URL);
 
-			const loginSuccess = await this.page.evaluate(() => Boolean(document.querySelector('a[aria-label="Home"]')));
+			const loginSuccess = await this.page.evaluate(() => Boolean(document.querySelector('svg[class="i9kwxoiq"]')));
 
 			return loginSuccess ? { success: true, error: '' } : { success: false, error: 'login' };
 		}
